@@ -1,0 +1,6 @@
+.right-move-enter-active, .right-move-leave-active{
+  transition: all 0.3s;
+}
+.right-move-enter, .right-move-leave-to{
+  transform: translateX(100vw);
+}
