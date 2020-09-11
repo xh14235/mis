@@ -1,6 +1,6 @@
 <template>
   <div class="nav-popup-wrapper">
-    <van-button type="info" icon="weapp-nav" block @click="toHome()">
+    <van-button color="#00B0F0" icon="weapp-nav" block @click="toHome()">
       首页
     </van-button>
     <van-collapse v-model="activeName" accordion>
@@ -21,7 +21,7 @@
         </ul>
       </van-collapse-item>
     </van-collapse>
-    <van-button type="info" icon="share" block @click="logout()">
+    <van-button color="#00B0F0" icon="share" block @click="logout()">
       退出
     </van-button>
   </div>

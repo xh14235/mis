@@ -36,7 +36,7 @@
       </div>
       <div class="search-btn-wrapper">
         <van-button type="default" @click="clearForm()">清除</van-button>
-        <van-button type="info" @click="getProductList()">搜索</van-button>
+        <van-button color="#31859B" @click="getProductList()">搜索</van-button>
       </div>
     </div>
     <div class="product-list">
@@ -90,7 +90,9 @@
       </div>
       <div class="no-info" v-else>暂无信息</div>
     </div>
-    <van-button type="info" @click="addDetail()">上工</van-button>
+    <van-button class="to-work" color="#31859B" @click="addDetail()">
+      上工
+    </van-button>
   </div>
 </template>
 
@@ -180,6 +182,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.go-to-work-box >>> .van-pagination__item
+  color: #31859B
+.go-to-work-box >>> .van-pagination__item--active
+  color: #ffffff
+  background-color: #31859B
 .go-to-work-box >>> .van-button
   height: 3.2rem
 .table-body >>> span
@@ -188,7 +195,7 @@ export default {
   padding: .2rem
   white-space: nowrap
   background: #258dde
-  border-radius: 5px
+  border-radius: 2px
   color: #fff
 .go-to-work-box >>> .van-pagination__item
   height: 2.4rem
@@ -201,7 +208,7 @@ export default {
     width: 100%
     margin: 1rem auto
     background: #DBEEF3
-    border-radius: 5px
+    border-radius: 2px
     .search-tab
       display: flex
       justify-content: space-between
@@ -211,7 +218,7 @@ export default {
         text-align: center
         line-height: 3rem
         background: #D8D8D8
-        border-radius: 5px
+        border-radius: 2px
         font-size: 1.4rem
         &.active
           background: #92CDDC
@@ -231,7 +238,7 @@ export default {
         .form-input
           flex: 1
           width: 100%
-          border-radius: 5px
+          border-radius: 2px
           border: 1px solid #ddd
         &.form-item2
           flex: 0 0 48%
@@ -243,7 +250,7 @@ export default {
       padding: 1rem
   .product-list
     border: 1px solid #92CDDC
-    border-radius: 5px
+    border-radius: 2px
     background: #fff
     padding: 1rem
     .no-info
@@ -257,4 +264,6 @@ export default {
     .no-info
       text-align: center
       padding: 1rem
+  .to-work
+    margin-top: 1rem
 </style>

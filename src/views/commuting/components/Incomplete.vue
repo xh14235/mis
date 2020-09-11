@@ -9,7 +9,7 @@
         <span>设备位数</span>
       </div>
       <div class="table-body" v-if="productivedList.length">
-        <p v-for="item of productivedList" :key="item.id">
+        <p v-for="item of productivedList" :key="item.tag">
           <span>{{ item.projectID }}</span>
           <span>{{ item.projectName }}</span>
           <span>{{ item.sn }}</span>
@@ -18,7 +18,7 @@
       </div>
       <div class="no-info" v-else>暂无信息</div>
     </div>
-    <van-button type="default" @click="goBack()">返回</van-button>
+    <van-button color="#A5A5A5" @click="goBack()">返回</van-button>
   </div>
 </template>
 
@@ -47,14 +47,9 @@ export default {
 <style lang="stylus" scoped>
 .table-body >>> span
   padding: .2rem
-.table-body >>> div
-  padding: .2rem
-  white-space: nowrap
-  background: #258dde
-  border-radius: 5px
-  color: #fff
 .incomplete-box >>> .van-button
   height: 3.2rem
+  margin-top: 1rem
 .incomplete-box
   text-align: center
   .productived-title

@@ -18,7 +18,7 @@
       </div>
       <div class="no-info" v-else>暂无信息</div>
     </div>
-    <van-button type="primary" @click="goOffWork()">下工</van-button>
+    <van-button color="#31859B" @click="goOffWork()">下工</van-button>
   </div>
 </template>
 
@@ -59,18 +59,13 @@ export default {
 <style lang="stylus" scoped>
 .table-body >>> span
   padding: .2rem
-.table-body >>> div
-  padding: .2rem
-  white-space: nowrap
-  background: #258dde
-  border-radius: 5px
-  color: #fff
 .go-off-work-box >>> .van-button
   height: 3.2rem
+  margin-top: 1rem
 .go-off-work-box
   text-align: center
   .productived-title
-    background: #FBD7BB
+    background: #FF976A
   .productived-list
     padding: 1rem
     background: #FDF2EA
