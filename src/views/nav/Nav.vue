@@ -13,12 +13,18 @@
             <ul class="nav2-ul">
               <li
                 class="nav2-li"
-                v-for="item3 of item2.children"
+                :class="{ grey: item3.status }"
+                v-for="(item3, index) of item2.children"
                 :key="item3.id"
-                @click="changeRouter(item3.route)"
+                @click="changeRouter(item3.route, item3.status)"
               >
                 {{ item3.name }}
-                <span class="working" v-if="item3.status">（上工中）</span>
+                <span class="working" v-if="item3.status && index === 0">
+                  （上工中）
+                </span>
+                <!-- <span class="working" v-if="item3.status && index === 1">
+                  （下工中）
+                </span> -->
               </li>
             </ul>
           </div>
@@ -33,6 +39,7 @@
 import { onWorkState } from "@/api/api";
 import nav1 from "@/assets/img/nav1.png";
 import nav2 from "@/assets/img/nav2.png";
+import nav3 from "@/assets/img/nav3.png";
 export default {
   name: "Nav",
   components: {
@@ -55,12 +62,13 @@ export default {
                   id: "111",
                   name: "生产上工",
                   route: "/commuting/gotowork",
-                  status: 1
+                  status: 0
                 },
                 {
                   id: "112",
                   name: "生产下工",
-                  route: "/commuting/gooffwork"
+                  route: "/commuting/gooffwork",
+                  status: 0
                 },
                 {
                   id: "113",
@@ -94,7 +102,24 @@ export default {
                 {
                   id: "211",
                   name: "工时报表",
-                  route: "/commuting/gooffwork"
+                  route: "/report/working"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: "3",
+          icon: nav3,
+          children: [
+            {
+              id: "31",
+              name: "权限设置",
+              children: [
+                {
+                  id: "311",
+                  name: "上下工审核",
+                  route: "/limit/commuting"
                 }
               ]
             }
@@ -104,14 +129,18 @@ export default {
     };
   },
   methods: {
-    changeRouter(route) {
-      this.$router.push({ path: route });
+    changeRouter(route, status) {
+      if (status) {
+        return false;
+      } else {
+        this.$router.push({ path: route });
+      }
     }
   },
   mounted() {
     onWorkState().then(res => {
-      console.log(res);
-      this.navList[0].children[0].children[2].status = res.code;
+      this.navList[0].children[0].children[0].status = Number(res.code);
+      this.navList[0].children[0].children[1].status = !Number(res.code);
     });
   }
 };
@@ -144,4 +173,6 @@ export default {
           line-height: 3rem
           .working
             color: #F9C499
+          &.grey
+            color: grey
 </style>

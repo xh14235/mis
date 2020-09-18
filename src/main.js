@@ -12,7 +12,10 @@ import {
   Collapse,
   CollapseItem,
   Button,
-  Toast
+  Toast,
+  RadioGroup,
+  Radio,
+  Calendar
 } from "vant";
 
 Vue.config.productionTip = false;
@@ -23,7 +26,10 @@ Vue.use(Checkbox)
   .use(Collapse)
   .use(CollapseItem)
   .use(Button)
-  .use(Toast);
+  .use(Toast)
+  .use(RadioGroup)
+  .use(Radio)
+  .use(Calendar);
 
 new Vue({
   router,

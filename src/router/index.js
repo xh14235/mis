@@ -66,6 +66,9 @@ const MisRrouter = new Router({
     {
       path: "/audit",
       name: "Audit",
+      meta: {
+        requireAuth: true
+      },
       component: () =>
         import(/* webpackChunkName: "audit" */ "@/views/audit/Audit"),
       children: [
@@ -78,6 +81,50 @@ const MisRrouter = new Router({
           component: () =>
             import(
               /* webpackChunkName: "audit/commuting" */ "@/views/audit/components/Commuting.vue"
+            )
+        }
+      ]
+    },
+    {
+      path: "/report",
+      name: "Report",
+      meta: {
+        requireAuth: true
+      },
+      component: () =>
+        import(/* webpackChunkName: "report" */ "@/views/report/Report"),
+      children: [
+        {
+          path: "/report/working",
+          name: "Working",
+          meta: {
+            requireAuth: true
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "report/working" */ "@/views/report/components/Working.vue"
+            )
+        }
+      ]
+    },
+    {
+      path: "/limit",
+      name: "Limit",
+      meta: {
+        requireAuth: true
+      },
+      component: () =>
+        import(/* webpackChunkName: "limit" */ "@/views/limit/Limit"),
+      children: [
+        {
+          path: "/limit/commuting",
+          name: "Commuting",
+          meta: {
+            requireAuth: true
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "limit/commuting" */ "@/views/limit/components/Commuting.vue"
             )
         }
       ]

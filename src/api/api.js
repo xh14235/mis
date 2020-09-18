@@ -27,12 +27,60 @@ export const addDetail = params => {
 // 查询已上工产品列表
 export const selectWorkStatus = params => {
   return axios
-    .post("/recordingHours/selectWorkStatus", qs.stringify(params))
+    .post("/recordingHours/selectWaitingList", qs.stringify(params))
     .then(res => res.data);
 };
 // 生产下工
 export const downToWork = params => {
   return axios
     .post("/recordingHours/downToWork", JSON.stringify(params))
+    .then(res => res.data);
+};
+// 获取未完成信息列表
+export const getIncompleteList = params => {
+  return axios
+    .post("/recordingHours/selectWorkStatus", qs.stringify(params))
+    .then(res => res.data);
+};
+// 获取审核列表
+export const getExamineList = params => {
+  return axios
+    .post("/recordingHours/Recordstobereviewed", JSON.stringify(params))
+    .then(res => res.data);
+};
+// 审核
+export const toExamine = params => {
+  return axios
+    .post("/recordingHours/toexamine", JSON.stringify(params))
+    .then(res => res.data);
+};
+// 获取已审核员工列表
+export const getAuthorizedList = () => {
+  return axios
+    .post("/recordingHours/Authoritymanagement")
+    .then(res => res.data);
+};
+// 获取可审核员工列表
+export const getBeforeAuthorizedList = () => {
+  return axios
+    .post("/recordingHours/SelectAddmanageList")
+    .then(res => res.data);
+};
+// 增加或者删除授权
+export const updatePermissions = params => {
+  return axios
+    .post("/recordingHours/Updatepermissions", JSON.stringify(params))
+    .then(res => res.data);
+};
+// 获取工时列表
+export const getHourList = params => {
+  return axios
+    .post("/HoursReport/getHoursReport", qs.stringify(params))
+    .then(res => res.data);
+};
+// 获取最近一天、七天、一个月
+export const getDateType = params => {
+  return axios
+    .post("/HoursReport/getTimeFrame", qs.stringify(params))
     .then(res => res.data);
 };

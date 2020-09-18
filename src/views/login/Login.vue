@@ -19,6 +19,7 @@
         class="login-checkbox"
         checked-color="#31859B"
         v-model="checked"
+        icon-size="1.4rem"
       >
         记住用户名
       </van-checkbox>
@@ -70,8 +71,9 @@ export default {
           this.getToken(res);
           localStorage.token = res.token;
           if (this.checked) {
-            localStorage.user = res.user;
+            localStorage.user = this.account.userName;
           }
+          localStorage.checked = this.checked;
           this.$router.push({
             path: "/nav"
           });
@@ -84,6 +86,7 @@ export default {
   created() {
     this.account.userName = localStorage.user || "";
     this.account.passWord = sessionStorage.psw || "";
+    this.checked = localStorage.checked === "true" ? true : false;
   }
 };
 </script>

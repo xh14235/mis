@@ -117,10 +117,11 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 }
 .table-body p{
     line-height: 2rem;
+    border-top: 1px solid #eee
 }
 .table-head, .table-body p{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     font-size: 1.2rem;
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="crumb-wrapper">
     <div class="position">{{ title }}</div>
-    <div class="number">
+    <!-- <div class="number">
       <span class="description">待处理</span>
       <span class="num">12</span>
       <span class="unit">件</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -31,6 +31,12 @@ export default {
           break;
         case "/audit/commuting":
           title = "生产审核-上下工审核";
+          break;
+        case "/report/working":
+          title = "查询/报表-工时报表";
+          break;
+        case "/limit/commuting":
+          title = "权限设置-上下工审核";
           break;
         default:
           title = "111";

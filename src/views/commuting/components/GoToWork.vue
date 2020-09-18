@@ -44,13 +44,13 @@
         <span>项目编号</span>
         <span>产品名称</span>
         <span>出厂编号</span>
-        <span>设备位数</span>
+        <span>设备位号</span>
         <span>操作</span>
       </div>
       <div class="table-body" v-if="productList.length">
         <p v-for="item of productList" :key="item.tag">
           <span>{{ item.projectID }}</span>
-          <span>{{ item.projectName }}</span>
+          <span :title="item.projectName">{{ item.projectName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>
@@ -74,13 +74,13 @@
         <span>项目编号</span>
         <span>产品名称</span>
         <span>出厂编号</span>
-        <span>设备位数</span>
+        <span>设备位号</span>
         <span>操作</span>
       </div>
       <div class="table-body" v-if="unproductiveList.length">
         <p v-for="item of unproductiveList" :key="item.tag">
           <span>{{ item.projectID }}</span>
-          <span>{{ item.projectName }}</span>
+          <span :title="item.projectName">{{ item.projectName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>
@@ -90,7 +90,12 @@
       </div>
       <div class="no-info" v-else>暂无信息</div>
     </div>
-    <van-button class="to-work" color="#31859B" @click="addDetail()">
+    <van-button
+      class="to-work"
+      :class="{ workable: toWorkDisable }"
+      color="#aaa"
+      @click="addDetail()"
+    >
       上工
     </van-button>
   </div>
@@ -133,6 +138,11 @@ export default {
       currentPage: 1
     };
   },
+  computed: {
+    toWorkDisable() {
+      return this.unproductiveList.length;
+    }
+  },
   methods: {
     changeTab(index) {
       this.tabChosen = index;
@@ -142,11 +152,15 @@ export default {
         if (res.code === 200) {
           this.productList = res.list;
           this.total = res.total;
+          if (!res.list.length) {
+            this.$toast.fail("查询结果为空！");
+          }
         }
       });
     },
-    changePage(e) {
-      this.getProductList(e);
+    changePage() {
+      this.form.page = this.currentPage;
+      this.getProductList();
     },
     clearForm() {
       this.form = {
@@ -169,13 +183,21 @@ export default {
       );
     },
     addDetail() {
-      addDetail(this.unproductiveList).then(res => {
-        if (res.code === 200) {
-          this.$toast.success(res.msg);
-        } else {
-          this.$toast.fail("开工失败！");
-        }
-      });
+      if (this.unproductiveList.length) {
+        addDetail(this.unproductiveList).then(res => {
+          if (res.code === 200) {
+            this.$toast.success(res.msg);
+            this.$router.push({
+              path: "/nav"
+            });
+          } else {
+            this.$toast.fail("开工失败！");
+          }
+        });
+      } else {
+        this.$toast.fail("开工列表为空！");
+        return false;
+      }
     }
   }
 };
@@ -189,12 +211,23 @@ export default {
   background-color: #31859B
 .go-to-work-box >>> .van-button
   height: 3.2rem
+.table-head >>> span
+  flex: 0 0 20%
+  width: 20%
 .table-body >>> span
-  padding: .2rem
+  flex: 0 0 20%
+  width: 20%
+  &:nth-child(2)
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+  &:nth-child(3), &:nth-child(4)
+    word-break: break-all
 .table-body >>> div
-  padding: .2rem
+  display: inline-block
+  padding: .2rem 0.5rem
   white-space: nowrap
-  background: #258dde
+  background: #31859B
   border-radius: 2px
   color: #fff
 .go-to-work-box >>> .van-pagination__item
@@ -266,4 +299,7 @@ export default {
       padding: 1rem
   .to-work
     margin-top: 1rem
+    &.workable
+      background: #31859b!important
+      border-color: #31859b!important
 </style>
