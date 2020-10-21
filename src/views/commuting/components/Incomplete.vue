@@ -10,9 +10,9 @@
         <span>上工/下工时间</span>
       </div>
       <div class="table-body" v-if="productivedList.length">
-        <p v-for="item of productivedList" :key="item.tag">
+        <p v-for="item of productivedList" :key="item.prdID">
           <span>{{ item.projectID }}</span>
-          <span>{{ item.projectName }}</span>
+          <span>{{ item.prdName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>
@@ -29,6 +29,7 @@
 
 <script>
 import { getIncompleteList } from "@/api/api";
+// import { test2 } from "@/api/api2";
 export default {
   name: "Incomplete",
   data() {

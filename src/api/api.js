@@ -1,7 +1,7 @@
 import axios from "axios";
 // 包装param参数
 import qs from "qs";
-axios.defaults.baseURL = "http://172.18.102.13:8080";
+axios.defaults.baseURL = "http://172.18.101.101:8080";
 axios.defaults.withCredentials = true;
 
 // 登录
@@ -82,5 +82,21 @@ export const getHourList = params => {
 export const getDateType = params => {
   return axios
     .post("/HoursReport/getTimeFrame", qs.stringify(params))
+    .then(res => res.data);
+};
+// 手工输入sn
+export const handleSn = params => {
+  return axios
+    .post("/recordingHours/selectRecordingHoursBysn", qs.stringify(params))
+    .then(res => res.data);
+};
+// 文件上传
+export const submitFile = params => {
+  let config = {
+    headers: { "Content-Type": "multipart/form-data" }
+  };
+  // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  return axios
+    .post("/recordingHours/selectRecordingHoursByEWM", params, config)
     .then(res => res.data);
 };

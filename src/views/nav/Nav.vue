@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { onWorkState } from "@/api/api";
+import { onWorkState } from "@/api/api2";
 import nav1 from "@/assets/img/nav1.png";
 import nav2 from "@/assets/img/nav2.png";
 import nav3 from "@/assets/img/nav3.png";

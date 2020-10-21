@@ -1,9 +1,9 @@
 let defaultToken = localStorage.token || "";
-let defaultUserName = localStorage.user || "";
+// let defaultUserName = localStorage.user || "";
 
 export default {
   token: defaultToken,
-  userName: defaultUserName,
+  userName: "",
   menuStatus: false,
   navPopupShow: false
 };

@@ -10,9 +10,9 @@
         <span>上工时间</span>
       </div>
       <div class="table-body" v-if="productivedList.length">
-        <p v-for="item of productivedList" :key="item.tag">
+        <p v-for="item of productivedList" :key="item.prdID">
           <span>{{ item.projectID }}</span>
-          <span>{{ item.projectName }}</span>
+          <span>{{ item.prdName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>{{ item.startTime }}</span>
@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { selectWorkStatus, downToWork } from "@/api/api";
+import { selectWorkStatus } from "@/api/api";
+import { downToWork } from "@/api/api";
 export default {
   name: "GoOffWork",
   data() {

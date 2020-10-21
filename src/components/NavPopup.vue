@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { onWorkState } from "@/api/api";
+import { onWorkState } from "@/api/api2";
 import { mapState, mapMutations } from "vuex";
 export default {
   name: "NavPopup",

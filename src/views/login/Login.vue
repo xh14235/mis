@@ -67,11 +67,13 @@ export default {
     ...mapMutations(["getToken"]),
     login() {
       login(this.account).then(res => {
+        console.log(res);
         if (res.code === 200) {
           this.getToken(res);
           localStorage.token = res.token;
+          sessionStorage.user = res.staffName;
           if (this.checked) {
-            localStorage.user = this.account.userName;
+            localStorage.user = res.staffName;
           }
           localStorage.checked = this.checked;
           this.$router.push({

@@ -15,7 +15,8 @@ import {
   Toast,
   RadioGroup,
   Radio,
-  Calendar
+  Calendar,
+  Uploader
 } from "vant";
 
 Vue.config.productionTip = false;
@@ -29,7 +30,8 @@ Vue.use(Checkbox)
   .use(Toast)
   .use(RadioGroup)
   .use(Radio)
-  .use(Calendar);
+  .use(Calendar)
+  .use(Uploader);
 
 new Vue({
   router,

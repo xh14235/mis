@@ -24,9 +24,9 @@
             <span>设备位号</span>
           </div>
           <div class="table-body" v-if="item.length">
-            <p v-for="item2 of item" :key="item2.tag">
+            <p v-for="item2 of item" :key="item2.prdID">
               <span>{{ item2.projectID }}</span>
-              <span>{{ item2.projectName }}</span>
+              <span>{{ item2.prdName }}</span>
               <span>{{ item2.sn }}</span>
               <span>{{ item2.tag }}</span>
             </p>

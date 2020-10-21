@@ -5,7 +5,7 @@
       <b>Regeon MIS</b>
     </div>
     <div class="control">
-      <span class="user-name">{{ userName }}</span>
+      <span class="user-name">{{ user }}</span>
       <van-icon name="wap-nav" @click="toggleNavPopup()" />
     </div>
     <transition name="right-move">
@@ -22,7 +22,10 @@ export default {
     NavPopup: () => import("@/components/NavPopup")
   },
   computed: {
-    ...mapState(["userName", "navPopupShow"])
+    ...mapState(["userName", "navPopupShow"]),
+    user() {
+      return this.userName || sessionStorage.user;
+    }
   },
   methods: {
     ...mapMutations(["toggleNavPopup"])

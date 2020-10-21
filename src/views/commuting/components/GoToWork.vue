@@ -12,7 +12,7 @@
           {{ item.name }}
         </div>
       </div>
-      <div class="search-form">
+      <div class="search-form" v-show="tabChosen === 0">
         <div class="form-item">
           <span class="form-label">搜索数量</span>
           <input v-model="form.SelQty" class="form-input" type="text" />
@@ -34,9 +34,33 @@
           <input v-model="form.Tag" class="form-input" type="text" />
         </div>
       </div>
-      <div class="search-btn-wrapper">
+      <div class="search-btn-wrapper" v-show="tabChosen === 0">
         <van-button type="default" @click="clearForm()">清除</van-button>
         <van-button color="#31859B" @click="getProductList()">搜索</van-button>
+      </div>
+      <div class="sn-wrapper" v-show="tabChosen === 1">
+        <div class="scan-code-btn">
+          <!-- <input type="file" id="newfile" @change="afterRead" /> -->
+          <van-uploader :after-read="afterRead">
+            <img src="../../../assets/img/scan-code.png" alt="" />
+          </van-uploader>
+        </div>
+        <div class="sn-input-wrapper">
+          <input
+            class="sn-input"
+            type="text"
+            v-model="handleSnNum"
+            placeholder="手工输入"
+          />
+          <van-button
+            class="sn-btn"
+            :class="{ active: handleSnNum.length }"
+            color="#aaaaaa"
+            @click="handleSn()"
+          >
+            提交
+          </van-button>
+        </div>
       </div>
     </div>
     <div class="product-list">
@@ -45,12 +69,14 @@
         <span>产品名称</span>
         <span>出厂编号</span>
         <span>设备位号</span>
-        <span>操作</span>
+        <span>
+          <div class="all-add" @click="addAllProduct()">全部添加</div>
+        </span>
       </div>
       <div class="table-body" v-if="productList.length">
-        <p v-for="item of productList" :key="item.tag">
+        <p v-for="item of productList" :key="item.prdID">
           <span>{{ item.projectID }}</span>
-          <span :title="item.projectName">{{ item.projectName }}</span>
+          <span :title="item.prdName">{{ item.prdName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>
@@ -78,9 +104,9 @@
         <span>操作</span>
       </div>
       <div class="table-body" v-if="unproductiveList.length">
-        <p v-for="item of unproductiveList" :key="item.tag">
+        <p v-for="item of unproductiveList" :key="item.prdID">
           <span>{{ item.projectID }}</span>
-          <span :title="item.projectName">{{ item.projectName }}</span>
+          <span :title="item.prdName">{{ item.prdName }}</span>
           <span>{{ item.sn }}</span>
           <span>{{ item.tag }}</span>
           <span>
@@ -102,11 +128,13 @@
 </template>
 
 <script>
-import { getProductList, addDetail } from "@/api/api";
+import { getProductList } from "@/api/api2";
+import { addDetail, handleSn, submitFile } from "@/api/api";
 export default {
   name: "GoToWork",
   data() {
     return {
+      handleSnNum: "",
       tabChosen: 0,
       tabList: [
         {
@@ -116,15 +144,11 @@ export default {
         {
           id: "02",
           name: "出产编号"
-        },
-        {
-          id: "03",
-          name: "设备位号"
         }
       ],
       form: {
         ProjectID: "", // 项目编号
-        SelQty: 100, // 数量，
+        SelQty: 100, // 数量
         PrdName: "", // 产品名
         SN: "", // 出厂编号
         Tag: "", // 设备位号
@@ -148,15 +172,20 @@ export default {
       this.tabChosen = index;
     },
     getProductList() {
-      getProductList(this.form).then(res => {
-        if (res.code === 200) {
-          this.productList = res.list;
-          this.total = res.total;
-          if (!res.list.length) {
-            this.$toast.fail("查询结果为空！");
+      getProductList(this.form)
+        .then(res => {
+          if (res.code === 200) {
+            this.productList = [];
+            this.productList = res.list;
+            this.total = res.total;
+            if (!res.list.length) {
+              this.$toast.fail("查询结果为空！");
+            }
           }
-        }
-      });
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     changePage() {
       this.form.page = this.currentPage;
@@ -175,7 +204,22 @@ export default {
       };
     },
     addProduct(item) {
-      this.unproductiveList.push(item);
+      if (!this.unproductiveList.length) {
+        this.unproductiveList.push(item);
+      } else {
+        for (let i = 0; i < this.unproductiveList.length; i++) {
+          if (this.unproductiveList[i].prdID === item.prdID) {
+            this.$toast.fail(item.prdName + item.prdID + "已添加！");
+          } else {
+            this.unproductiveList.push(item);
+          }
+        }
+      }
+    },
+    addAllProduct() {
+      for (let i = 0; i < this.productList.length; i++) {
+        this.addProduct(this.productList[i]);
+      }
     },
     deleteProduct(item) {
       this.unproductiveList = this.unproductiveList.filter(
@@ -198,6 +242,33 @@ export default {
         this.$toast.fail("开工列表为空！");
         return false;
       }
+    },
+    handleSn() {
+      if (this.handleSnNum.length) {
+        handleSn({ SN: this.handleSnNum }).then(res => {
+          if (res.code === 200 && res.list) {
+            let item = res.list;
+            this.addProduct(item);
+          } else {
+            this.$toast.fail("未查询出该产品！");
+          }
+        });
+      }
+    },
+    // 二维码
+    afterRead(file) {
+      let param = new FormData();
+      param.append("fileUpload", file.file);
+      // console.log(param);
+      submitFile(param).then(res => {
+        // console.log(res);
+        if (res.code === 200 && res.list) {
+          this.handleSnNum = res.list.sn;
+          this.addProduct(res.list);
+        } else {
+          this.$toast.fail("未识别出该产品！");
+        }
+      });
     }
   }
 };
@@ -214,6 +285,13 @@ export default {
 .table-head >>> span
   flex: 0 0 20%
   width: 20%
+  .all-add
+    display: inline-block
+    padding: 0 0.5rem
+    white-space: nowrap
+    background: #52bf2e
+    border-radius: 2px
+    color: #fff
 .table-body >>> span
   flex: 0 0 20%
   width: 20%
@@ -246,7 +324,7 @@ export default {
       display: flex
       justify-content: space-between
       .search-tab-item
-        flex: 0 0 33%
+        flex: 0 0 50%
         width: 33%
         text-align: center
         line-height: 3rem
@@ -281,6 +359,23 @@ export default {
       justify-content: space-around
       align-items: center
       padding: 1rem
+    .sn-wrapper
+      padding: 1rem
+      .scan-code-btn
+        width: 50%
+        margin: 0 auto
+        img
+          width: 100%
+      .sn-input-wrapper
+        margin-top: 1rem
+        .sn-input
+          border-radius: 2px
+          border: 1px solid #ddd
+          height: 2.4rem
+        .sn-btn
+          &.active
+            background: #31859b!important
+            border-color: #31859b!important
   .product-list
     border: 1px solid #92CDDC
     border-radius: 2px
